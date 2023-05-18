@@ -1,27 +1,27 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios';
 import './App.css'
 
 
 function App() {
-  const [data, setData] = useState('');
-  const [id, setID] = useState('');
+const [response, setResponse] = useState({slip: {} });
   
   const getData = async () =>{
     try{
       const response = await axios.get("https://api.adviceslip.com/advice");
-      setData(response.data.slip.advice);
-      setID(response.data.slip.id);
+      setResponse(response.data);
     } catch (error){
       console.log(error.response);
     }
   }
-getData();
+useEffect(() => {
+    getData();
+  }, []);
   return (
     <>
     <div className='box'>
-      <p>ADVICE #{id}</p>
-      <h1>"{data}"</h1>
+      <p>ADVICE #{response.slip.id}</p>
+      <h1>"{response.slip.advice}"</h1>
       <img className='mobileSVG' src="./src/images/pattern-divider-mobile.svg" alt="" />
       <img className='desktopSVG' src="./src/images/pattern-divider-desktop.svg" alt="" />
     </div>
